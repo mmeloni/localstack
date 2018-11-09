@@ -25,4 +25,8 @@ localstack/infra/
 /.idea
 **/obj/**
 **/bin/**
+.terraform
+terraform.*
+terraform/s3/main.zip
+
 !bin/docker-entrypoint.sh
