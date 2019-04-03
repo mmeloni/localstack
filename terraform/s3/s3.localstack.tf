@@ -5,6 +5,7 @@ provider "aws" {
   skip_credentials_validation = true
   skip_metadata_api_check = true
   s3_force_path_style = true
+  skip_requesting_account_id = true
   endpoints {
     s3         = "http://localhost:4572"
   }
@@ -13,6 +14,7 @@ provider "aws" {
 resource "aws_s3_bucket" "b" {
   bucket = "terraform-serverless-example-go-gin"
   acl    = "public-read"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_object" "object" {

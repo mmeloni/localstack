@@ -3,6 +3,7 @@ provider "aws" {
   access_key = "anaccesskey"
   secret_key = "asecretkey"
   skip_credentials_validation = true
+  skip_requesting_account_id = true
   skip_metadata_api_check = true
   s3_force_path_style = true
   endpoints {
@@ -29,6 +30,11 @@ resource "aws_lambda_function" "example" {
   runtime = "go1.x"
   
   role = "r1"
+  environment {
+    variables = {
+      env = "development"
+    }
+  }
 }
 
 resource "aws_api_gateway_rest_api" "example" {
@@ -85,15 +91,3 @@ resource "aws_api_gateway_deployment" "example" {
   rest_api_id = "${aws_api_gateway_rest_api.example.id}"
   stage_name  = "test"
 }
-
-resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.example.arn}"
-  principal     = "*"
-
-  # The /*/* portion grants access from any method on any resource
-  # within the API Gateway "REST API".
-  source_arn = "${aws_api_gateway_deployment.example.execution_arn}/*/*/*"
-}
-
