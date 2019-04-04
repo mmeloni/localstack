@@ -37,6 +37,10 @@ ADD bin/docker-entrypoint.sh /usr/local/bin/
 # expose service & web dashboard ports
 EXPOSE 4567-4593 8080
 
+RUN mkdir -p /docker-entrypoint-initaws.d
+ADD build_lambda.sh /docker-entrypoint-initaws.d
+ADD install_lambda.sh /docker-entrypoint-initaws.d
+
 # define command at startup
 ENTRYPOINT ["docker-entrypoint.sh"]
 
